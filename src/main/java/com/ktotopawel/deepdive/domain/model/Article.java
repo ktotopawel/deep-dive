@@ -1,10 +1,10 @@
-package com.ktotopawel.deepdive.domain;
+package com.ktotopawel.deepdive.domain.model;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 
-public record Article(String title, String url, Instant publishedAt, String content) {
+public record Article(String title, String url, String sourceUrl, Instant publishedAt, String content) {
     @Override
     @NotNull
     public String toString() {

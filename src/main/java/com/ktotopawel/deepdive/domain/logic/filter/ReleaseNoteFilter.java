@@ -1,6 +1,6 @@
-package com.ktotopawel.deepdive.domain.filter;
+package com.ktotopawel.deepdive.domain.logic.filter;
 
-import com.ktotopawel.deepdive.domain.Article;
+import com.ktotopawel.deepdive.domain.model.Article;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

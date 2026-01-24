@@ -1,4 +1,6 @@
-package com.ktotopawel.deepdive.domain;
+package com.ktotopawel.deepdive.domain.port;
+
+import com.ktotopawel.deepdive.domain.model.Article;
 
 import java.util.List;
 

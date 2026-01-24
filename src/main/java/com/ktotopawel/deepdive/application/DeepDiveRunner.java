@@ -1,8 +1,11 @@
 package com.ktotopawel.deepdive.application;
 
-import com.ktotopawel.deepdive.domain.Article;
-import com.ktotopawel.deepdive.domain.FeedFetcher;
-import com.ktotopawel.deepdive.domain.FeedRefinery;
+import com.ktotopawel.deepdive.domain.model.Article;
+import com.ktotopawel.deepdive.domain.model.Source;
+import com.ktotopawel.deepdive.domain.port.ArticleRepository;
+import com.ktotopawel.deepdive.domain.port.FeedFetcher;
+import com.ktotopawel.deepdive.domain.logic.FeedRefinery;
+import com.ktotopawel.deepdive.domain.port.SourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,6 +18,8 @@ public class DeepDiveRunner implements CommandLineRunner {
 
     private final FeedFetcher feedFetcher;
     private final FeedRefinery feedRefinery;
+    private final ArticleRepository articleRepository;
+    private final SourceRepository sourceRepository;
 
     @Override
     public void run(String... args) {
@@ -26,13 +31,11 @@ public class DeepDiveRunner implements CommandLineRunner {
         System.out.println("Fetching feed from: " + url);
 
         List<Article> articles = feedFetcher.fetch(url);
-
-        System.out.println("Found " + articles.size() + " articles");
-
         List<Article> refinedArticles = feedRefinery.refine(articles);
+        refinedArticles.forEach(articleRepository::save);
+        Source source = sourceRepository.getOrSave(url);
+        articleRepository.fetchAllFromSource(source).forEach(System.out::println);
 
-        System.out.println("Refined feeds: " + refinedArticles);
-        refinedArticles.forEach(System.out::println);
         System.exit(0);
     }
 

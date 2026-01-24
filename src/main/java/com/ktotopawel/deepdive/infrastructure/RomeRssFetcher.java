@@ -1,9 +1,8 @@
 package com.ktotopawel.deepdive.infrastructure;
 
-import com.ktotopawel.deepdive.domain.Article;
-import com.ktotopawel.deepdive.domain.FeedFetchException;
-import com.ktotopawel.deepdive.domain.FeedFetcher;
-import com.rometools.rome.feed.synd.SyndEntry;
+import com.ktotopawel.deepdive.domain.model.Article;
+import com.ktotopawel.deepdive.domain.logic.FeedFetchException;
+import com.ktotopawel.deepdive.domain.port.FeedFetcher;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
@@ -15,7 +14,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RomeRssFetcher implements FeedFetcher {
@@ -29,6 +27,7 @@ public class RomeRssFetcher implements FeedFetcher {
                     .map((entry) -> new Article(
                             entry.getTitle(),
                             entry.getLink(),
+                            feed.getUri(),
                             entry.getPublishedDate().toInstant(),
                             extractContent(entry)))
                     .toList();
