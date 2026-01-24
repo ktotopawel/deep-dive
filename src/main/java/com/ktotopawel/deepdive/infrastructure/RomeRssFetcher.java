@@ -27,7 +27,7 @@ public class RomeRssFetcher implements FeedFetcher {
                     .map((entry) -> new Article(
                             entry.getTitle(),
                             entry.getLink(),
-                            feed.getUri(),
+                            url,
                             entry.getPublishedDate().toInstant(),
                             extractContent(entry)))
                     .toList();
@@ -38,7 +38,7 @@ public class RomeRssFetcher implements FeedFetcher {
 
     private String extractContent(com.rometools.rome.feed.synd.SyndEntry entry) {
         if (entry.getContents() != null && !entry.getContents().isEmpty()) {
-            return entry.getContents().get(0).getValue();
+            return entry.getContents().getFirst().getValue();
         }
         if (entry.getDescription() != null) {
             return entry.getDescription().getValue();

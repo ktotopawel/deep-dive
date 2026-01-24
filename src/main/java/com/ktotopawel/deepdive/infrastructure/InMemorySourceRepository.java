@@ -11,25 +11,26 @@ import org.xml.sax.InputSource;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class InMemorySourceRepository implements SourceRepository {
 
-    private Map<String, Source> sources;
+    private final Map<String, Source> sources = new HashMap<>();
 
     @Override
     public Source getOrSave(String url) {
         if (sources.containsKey(url)) {
             return sources.get(url);
         }
-        Source newSource = new Source(getSoruceName(url), url);
+        Source newSource = new Source(getSourceName(url), url);
         sources.put(url, newSource);
         return newSource;
     }
 
-    private String getSoruceName(String url) {
+    private String getSourceName(String url) {
         try {
             return new SyndFeedInput().build(new InputSource(new URI(url).toURL().openStream())).getTitle();
         } catch (IOException | URISyntaxException | FeedException e) {

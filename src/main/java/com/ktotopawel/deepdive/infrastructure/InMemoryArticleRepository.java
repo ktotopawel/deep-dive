@@ -25,7 +25,7 @@ public class InMemoryArticleRepository implements ArticleRepository {
     @Override
     public List<Article> fetchAllFromSource(Source source) {
         return articles.values().stream()
-                .filter(article -> Objects.equals(article.sourceUrl(), source.url()))
+                .filter(article -> article.sourceUrl().equals(source.url()))
                 .toList();
     }
 }
