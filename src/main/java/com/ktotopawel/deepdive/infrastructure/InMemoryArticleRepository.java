@@ -3,13 +3,12 @@ package com.ktotopawel.deepdive.infrastructure;
 import com.ktotopawel.deepdive.domain.model.Article;
 import com.ktotopawel.deepdive.domain.model.Source;
 import com.ktotopawel.deepdive.domain.port.ArticleRepository;
-import com.ktotopawel.deepdive.domain.port.SourceRepository;
+import com.ktotopawel.deepdive.infrastructure.persistance.ArticleEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor

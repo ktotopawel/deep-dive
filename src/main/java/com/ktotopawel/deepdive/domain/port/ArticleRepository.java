@@ -2,6 +2,7 @@ package com.ktotopawel.deepdive.domain.port;
 
 import com.ktotopawel.deepdive.domain.model.Article;
 import com.ktotopawel.deepdive.domain.model.Source;
+import com.ktotopawel.deepdive.infrastructure.persistance.ArticleEntity;
 
 import java.util.List;
 
