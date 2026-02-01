@@ -2,32 +2,38 @@ package com.ktotopawel.deepdive.infrastructure;
 
 import com.ktotopawel.deepdive.domain.model.Source;
 import com.ktotopawel.deepdive.domain.port.SourceRepository;
+import com.ktotopawel.deepdive.infrastructure.persistance.SourceEntity;
+import com.ktotopawel.deepdive.infrastructure.persistance.SpringDataSourceRepository;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import org.xml.sax.InputSource;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
+@Primary
 @Repository
 @RequiredArgsConstructor
-public class InMemorySourceRepository implements SourceRepository {
+public class JpaSourceRepository implements SourceRepository {
 
-    private final Map<String, Source> sources = new HashMap<>();
+    private final SpringDataSourceRepository repository;
 
     @Override
     public Source getOrSave(String url) {
-        if (sources.containsKey(url)) {
-            return sources.get(url);
+        Optional<SourceEntity> source = repository.findById(url);
+        if (source.isEmpty()) {
+            SourceEntity newSource = new SourceEntity();
+            newSource.setUrl(url);
+            newSource.setName(getSourceName(url));
+            repository.save(newSource);
+            return new Source(newSource.getName(),  newSource.getUrl());
         }
-        Source newSource = new Source(getSourceName(url), url);
-        sources.put(url, newSource);
-        return newSource;
+        return new Source(source.get().getName(),  source.get().getUrl());
     }
 
     private String getSourceName(String url) {

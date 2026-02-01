@@ -14,7 +14,7 @@ import java.util.List;
 @Primary
 @Repository
 @RequiredArgsConstructor
-public class H2ArticleRepository implements ArticleRepository {
+public class JpaArticleRepository implements ArticleRepository {
 
     private final SpringDataArticleRepository repository;
 

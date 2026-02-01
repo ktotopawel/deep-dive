@@ -25,8 +25,7 @@ public class ArticleEntity {
     @Column(nullable = false)
     private Instant publishedAt;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
 }
