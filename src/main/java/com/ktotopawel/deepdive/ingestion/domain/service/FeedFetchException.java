@@ -1,4 +1,4 @@
-package com.ktotopawel.deepdive.domain.logic;
+package com.ktotopawel.deepdive.ingestion.domain.service;
 
 public class FeedFetchException extends RuntimeException {
     public FeedFetchException(String message, Throwable cause) {

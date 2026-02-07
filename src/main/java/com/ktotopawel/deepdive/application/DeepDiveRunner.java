@@ -1,11 +1,11 @@
 package com.ktotopawel.deepdive.application;
 
-import com.ktotopawel.deepdive.domain.model.Article;
-import com.ktotopawel.deepdive.domain.model.Source;
-import com.ktotopawel.deepdive.domain.port.ArticleRepository;
-import com.ktotopawel.deepdive.domain.port.FeedFetcher;
-import com.ktotopawel.deepdive.domain.logic.FeedRefinery;
-import com.ktotopawel.deepdive.domain.port.SourceRepository;
+import com.ktotopawel.deepdive.ingestion.domain.model.Article;
+import com.ktotopawel.deepdive.ingestion.domain.model.Source;
+import com.ktotopawel.deepdive.ingestion.domain.port.ArticleRepository;
+import com.ktotopawel.deepdive.ingestion.domain.port.FeedFetcher;
+import com.ktotopawel.deepdive.ingestion.domain.service.FeedRefinery;
+import com.ktotopawel.deepdive.ingestion.domain.port.SourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,8 @@
-package com.ktotopawel.deepdive.infrastructure;
+package com.ktotopawel.deepdive.ingestion.adapter.persistence;
 
-import com.ktotopawel.deepdive.domain.model.Article;
-import com.ktotopawel.deepdive.domain.model.Source;
-import com.ktotopawel.deepdive.domain.port.ArticleRepository;
-import com.ktotopawel.deepdive.infrastructure.persistance.ArticleEntity;
-import com.ktotopawel.deepdive.infrastructure.persistance.SpringDataArticleRepository;
+import com.ktotopawel.deepdive.ingestion.domain.model.Article;
+import com.ktotopawel.deepdive.ingestion.domain.model.Source;
+import com.ktotopawel.deepdive.ingestion.domain.port.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;

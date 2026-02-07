@@ -1,4 +1,4 @@
-package com.ktotopawel.deepdive.domain.model;
+package com.ktotopawel.deepdive.ingestion.domain.model;
 
 import org.jetbrains.annotations.NotNull;
 

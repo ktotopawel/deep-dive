@@ -1,8 +1,8 @@
-package com.ktotopawel.deepdive.infrastructure;
+package com.ktotopawel.deepdive.ingestion.adapter.rss;
 
-import com.ktotopawel.deepdive.domain.logic.FeedFetchException;
-import com.ktotopawel.deepdive.domain.model.Article;
-import com.ktotopawel.deepdive.domain.port.FeedFetcher;
+import com.ktotopawel.deepdive.ingestion.domain.service.FeedFetchException;
+import com.ktotopawel.deepdive.ingestion.domain.model.Article;
+import com.ktotopawel.deepdive.ingestion.domain.port.FeedFetcher;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;

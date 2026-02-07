@@ -1,9 +1,7 @@
-package com.ktotopawel.deepdive.infrastructure;
+package com.ktotopawel.deepdive.ingestion.adapter.persistence;
 
-import com.ktotopawel.deepdive.domain.model.Source;
-import com.ktotopawel.deepdive.domain.port.SourceRepository;
-import com.ktotopawel.deepdive.infrastructure.persistance.SourceEntity;
-import com.ktotopawel.deepdive.infrastructure.persistance.SpringDataSourceRepository;
+import com.ktotopawel.deepdive.ingestion.domain.model.Source;
+import com.ktotopawel.deepdive.ingestion.domain.port.SourceRepository;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import lombok.RequiredArgsConstructor;

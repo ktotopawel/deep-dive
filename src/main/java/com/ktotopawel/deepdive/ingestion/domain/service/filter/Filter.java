@@ -1,6 +1,6 @@
-package com.ktotopawel.deepdive.domain.logic.filter;
+package com.ktotopawel.deepdive.ingestion.domain.service.filter;
 
-import com.ktotopawel.deepdive.domain.model.Article;
+import com.ktotopawel.deepdive.ingestion.domain.model.Article;
 
 import java.util.List;
 import java.util.function.Predicate;

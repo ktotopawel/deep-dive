@@ -1,4 +1,4 @@
-package com.ktotopawel.deepdive.infrastructure.persistance;
+package com.ktotopawel.deepdive.ingestion.adapter.persistence;
 
 import jakarta.persistence.*;
 import lombok.Getter;

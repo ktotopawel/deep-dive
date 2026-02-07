@@ -1,7 +1,7 @@
-package com.ktotopawel.deepdive.domain.logic;
+package com.ktotopawel.deepdive.ingestion.domain.service;
 
-import com.ktotopawel.deepdive.domain.logic.filter.Filter;
-import com.ktotopawel.deepdive.domain.model.Article;
+import com.ktotopawel.deepdive.ingestion.domain.service.filter.Filter;
+import com.ktotopawel.deepdive.ingestion.domain.model.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
