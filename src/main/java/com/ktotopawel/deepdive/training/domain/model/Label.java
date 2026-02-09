@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Label {
     TUTORIAL("tutorial"),
-    RELEASE_NOTES("release_notes"),
+    RELEASE_NOTES("release"),
     PROGRAMMING("programming");
 
     private final String tag;

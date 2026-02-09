@@ -30,6 +30,7 @@ public class DevToClient {
     }
 
     private List<FetchByLabelDevToDTO> fetchByLabel(String label) {
+        System.out.println("Fetching by label: " + label);
         List<FetchByLabelDevToDTO> articles = new ArrayList<>();
         int curPage = 1;
 
@@ -42,7 +43,7 @@ public class DevToClient {
                                         .uri(uriBuilder -> uriBuilder
                                                 .path("articles")
                                                 .queryParam("tag", label)
-                                                .queryParam("per_page", 1000)
+                                                .queryParam("per_page", 30)
                                                 .queryParam("page", finalCurPage)
                                                 .build()
                                         )
@@ -56,7 +57,9 @@ public class DevToClient {
                         Duration.ofSeconds(10)
                 );
 
-                if (page == null || page.isEmpty()) {
+                System.out.println("fetched page " + curPage + " for " + label);
+
+                if (page == null || page.isEmpty() || curPage > 1) {
                     break;
                 }
 
@@ -71,6 +74,8 @@ public class DevToClient {
                 throw ex;
             }
         }
+
+        System.out.println("Articles returned: " + articles.size());
 
         return articles;
     }
@@ -89,6 +94,8 @@ public class DevToClient {
     }
 
     private DevToArticleDTO fetchArticleById(Long id) {
+
+        System.out.println("Fetching by id: " + id);
 
         try {
             return retryOn429(() -> webClient.get()
