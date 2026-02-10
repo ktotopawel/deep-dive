@@ -1,6 +1,8 @@
 package com.ktotopawel.deepdive.training.adapter.devto;
 
+import com.ktotopawel.deepdive.training.adapter.devto.config.DevToClientConfig;
 import com.ktotopawel.deepdive.training.domain.model.Label;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -14,8 +16,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 @Component
+@RequiredArgsConstructor
 public class DevToClient {
 
+    private final DevToClientConfig config;
     private final WebClient webClient = WebClient.builder()
             .baseUrl("https://dev.to/api/")
             .build();
@@ -26,12 +30,20 @@ public class DevToClient {
             List<FetchByLabelDevToDTO> rawFetch = fetchByLabel(label.getTag());
             articleIds.addAll(rawFetch.stream().map(FetchByLabelDevToDTO::id).toList());
         }
-        return fetchArticlesConcurrently(articleIds, 6);
+        return fetchArticlesConcurrently(articleIds, config.getConcurrentCalls());
     }
 
     private List<FetchByLabelDevToDTO> fetchByLabel(String label) {
         System.out.println("Fetching by label: " + label);
         List<FetchByLabelDevToDTO> articles = new ArrayList<>();
+
+        int blockFor = config.getBlockFor();
+        int maxRetries = config.getMaxRetries();
+        int perPage = config.getPerPage();
+        int maxPages = config.getMaxPages();
+        int baseBackoff = config.getBaseBackoff();
+        int maxBackoff = config.getMaxBackoff();
+
         int curPage = 1;
 
         while (true) {
@@ -43,7 +55,7 @@ public class DevToClient {
                                         .uri(uriBuilder -> uriBuilder
                                                 .path("articles")
                                                 .queryParam("tag", label)
-                                                .queryParam("per_page", 30)
+                                                .queryParam("per_page",  perPage)
                                                 .queryParam("page", finalCurPage)
                                                 .build()
                                         )
@@ -51,15 +63,15 @@ public class DevToClient {
                                         .retrieve()
                                         .bodyToFlux(FetchByLabelDevToDTO.class)
                                         .collectList()
-                                        .block(Duration.ofSeconds(10)),
-                        10,
-                        Duration.ofSeconds(1),
-                        Duration.ofSeconds(10)
+                                        .block(Duration.ofSeconds(blockFor)),
+                        maxRetries,
+                        Duration.ofSeconds(baseBackoff),
+                        Duration.ofSeconds(maxBackoff)
                 );
 
                 System.out.println("fetched page " + curPage + " for " + label);
 
-                if (page == null || page.isEmpty() || curPage > 1) {
+                if (page == null || page.isEmpty() || curPage > maxPages) {
                     break;
                 }
 
@@ -97,16 +109,21 @@ public class DevToClient {
 
         System.out.println("Fetching by id: " + id);
 
+        int blockFor = config.getBlockFor();
+        int maxRetries = config.getMaxRetries();
+        int baseBackoff = config.getBaseBackoff();
+        int maxBackoff = config.getMaxBackoff();
+
         try {
             return retryOn429(() -> webClient.get()
                             .uri("articles/" + id)
                             .header("User-Agent", "deepdive-training-loader/1.0")
                             .retrieve()
                             .bodyToMono(DevToArticleDTO.class)
-                            .block(Duration.ofSeconds(10)),
-                    10,
-                    Duration.ofSeconds(1),
-                    Duration.ofSeconds(10)
+                            .block(Duration.ofSeconds(blockFor)),
+                    maxRetries,
+                    Duration.ofSeconds(baseBackoff),
+                    Duration.ofSeconds(maxBackoff)
             );
         } catch (WebClientResponseException ex) {
             int status = ex.getStatusCode().value();
