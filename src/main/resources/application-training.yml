@@ -1,10 +1,10 @@
 training:
-  devto:
-    enabled: true
-    concurrent-calls: 6
-    per-page: 100
-    max-pages: 10
-    block-for: 10
-    max-retries: 10
-    base-backoff: 1
-    max-backoff: 10
+devto:
+  enabled: true
+  concurrent-calls: 6
+  per-page: 100
+  max-pages: 10
+  block-for: 10
+  max-retries: 10
+  base-backoff: 1
+  max-backoff: 10

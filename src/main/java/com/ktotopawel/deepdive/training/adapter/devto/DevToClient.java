@@ -22,6 +22,7 @@ public class DevToClient {
     private final DevToClientConfig config;
     private final WebClient webClient = WebClient.builder()
             .baseUrl("https://dev.to/api/")
+            .codecs(clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024))
             .build();
 
     public List<DevToArticleDTO> fetchAll() {
@@ -47,6 +48,8 @@ public class DevToClient {
         int curPage = 1;
 
         while (true) {
+            if (curPage > maxPages) break;
+
             try {
                 int finalCurPage = curPage;
                 List<FetchByLabelDevToDTO> page = retryOn429(
@@ -55,7 +58,7 @@ public class DevToClient {
                                         .uri(uriBuilder -> uriBuilder
                                                 .path("articles")
                                                 .queryParam("tag", label)
-                                                .queryParam("per_page",  perPage)
+                                                .queryParam("per_page", perPage)
                                                 .queryParam("page", finalCurPage)
                                                 .build()
                                         )
@@ -71,7 +74,7 @@ public class DevToClient {
 
                 System.out.println("fetched page " + curPage + " for " + label);
 
-                if (page == null || page.isEmpty() || curPage > maxPages) {
+                if (page == null || page.isEmpty()) {
                     break;
                 }
 

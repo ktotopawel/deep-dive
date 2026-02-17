@@ -8,12 +8,14 @@ import com.ktotopawel.deepdive.ingestion.domain.service.FeedRefinery;
 import com.ktotopawel.deepdive.ingestion.domain.port.SourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Profile("ingestion")
 public class DeepDiveRunner implements CommandLineRunner {
 
     private final FeedFetcher feedFetcher;

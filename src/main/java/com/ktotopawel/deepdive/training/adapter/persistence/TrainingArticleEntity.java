@@ -13,14 +13,13 @@ import lombok.Setter;
 public class TrainingArticleEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     String url;
 
     @Column
     String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     String body;
 
     @Column(name = "label_source")
