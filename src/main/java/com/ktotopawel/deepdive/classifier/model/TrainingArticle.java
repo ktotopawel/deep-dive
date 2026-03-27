@@ -27,14 +27,14 @@ public class TrainingArticle {
   private Long id;
 
   @Column(nullable = false)
-  @Parsed(field = "title")
+  @Parsed
   private String title;
 
   @Column(nullable = false, columnDefinition = "TEXT")
-  @Parsed(field = "body")
+  @Parsed
   private String body;
 
   @Column(nullable = false)
-  @Parsed(field = "category")
+  @Parsed
   private String category;
 }

@@ -36,38 +36,69 @@ public class DataSetLoader {
         new FileInputStream(
             new File(fileUrl)),
         "UTF-8")) {
+
+      CsvParserSettings settings = new CsvParserSettings();
+      settings.setHeaderExtractionEnabled(true);
+      settings.getFormat().setDelimiter(separator);
+      settings.setMaxCharsPerColumn(-1);
+      settings.setLineSeparatorDetectionEnabled(true);
+
       BeanListProcessor<TrainingArticle> rowProcessor = new BeanListProcessor<TrainingArticle>(TrainingArticle.class) {
 
         @Override
         public void beanProcessed(TrainingArticle article, ParsingContext context) {
+
           if (article.getCategory() != null) {
             article.setCategory(article.getCategory().toUpperCase().trim());
           }
 
-          if (article.getCategory().isBlank() || article.getTitle().isBlank() || article.getBody().isBlank())
+          if (article.getCategory() == null ||
+              article.getTitle() == null ||
+              article.getBody() == null ||
+              article.getCategory().isBlank() ||
+              article.getTitle().isBlank() ||
+              article.getBody().isBlank()) {
+            log.warn("Article skipped - Category: {}, Title: {}, Body: {}",
+                article.getCategory(),
+                article.getTitle(),
+                article.getBody() != null ? article.getBody().substring(0, Math.min(50,
+                    article.getBody().length()))
+                    : "null");
             return;
+          }
 
+          log.info("Buffering article: " + article.getTitle());
           buffer.add(article);
 
           if (buffer.size() >= BATCH_SIZE) {
+            log.info("Svaing batch");
             repository.saveAll(buffer);
             buffer.clear();
           }
         }
 
         @Override
-        public void processEnded(ParsingContext context) {
+        public void processStarted(ParsingContext context) {
+          String[] headers = context.headers();
+          log.info("Started ingesting articles. Detected headers: {}",
+              headers != null ? String.join(", ", headers) : "null");
+          super.processStarted(context);
+        }
 
+        @Override
+        public void processEnded(ParsingContext context) {
           if (!buffer.isEmpty()) {
             repository.saveAll(buffer);
             buffer.clear();
+            log.info("Saving final buffer.");
           }
+          log.info("Finished ingesting articles.");
+          super.processEnded(context);
         }
       };
-      CsvParserSettings settings = new CsvParserSettings();
-      settings.setHeaderExtractionEnabled(true);
+
       settings.setProcessor(rowProcessor);
-      settings.getFormat().setDelimiter(separator);
+      log.info("CSV Parser Settings - Delimiter: '{}', LineSeparator: \\r\\n", separator);
       CsvParser parser = new CsvParser(settings);
       parser.parse(inputReader);
     } catch (IOException e) {
