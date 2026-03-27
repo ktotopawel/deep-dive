@@ -1,14 +1,16 @@
 package com.ktotopawel.deepdive.classifier.model;
 
+import com.univocity.parsers.annotations.Parsed;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 // probably could be extracted to a different schema is psql. 
 // for simplicity sake, kept as a table
@@ -21,13 +23,18 @@ import lombok.*;
 public class TrainingArticle {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @Column(nullable = false)
+  @Parsed(field = "title")
+  private String title;
+
+  @Column(nullable = false, columnDefinition = "TEXT")
+  @Parsed(field = "body")
   private String body;
 
   @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private Category category;
+  @Parsed(field = "category")
+  private String category;
 }
